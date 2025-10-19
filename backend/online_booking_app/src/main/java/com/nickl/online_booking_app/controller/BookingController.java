@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class BookingController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BookingDTO> createBooking(BookingDTO bookingDTO) {
+    public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO bookingDTO) {
         BookingDTO result = bookingService.createBooking(bookingDTO);
         if (result.getBookingId() != null) 
         {
@@ -45,12 +46,12 @@ public class BookingController {
     }
 
     @PutMapping("/update/{bookingId}")
-    public ResponseEntity<BookingDTO> updateBooking(@PathVariable UUID bookingId, BookingDTO bookingDTO) 
+    public ResponseEntity<BookingDTO> updateBooking(@PathVariable UUID bookingId, @RequestBody BookingDTO bookingDTO) 
     {
         return ResponseEntity.ok(bookingService.updateBooking(bookingId, bookingDTO));
     }
 
-    @DeleteMapping("delete/{bookingId}")
+    @PutMapping("cancel/{bookingId}")
     public ResponseEntity<String> cancelBooking(@PathVariable UUID bookingId) 
     {
         return ResponseEntity.ok(bookingService.cancelBooking(bookingId));

@@ -12,7 +12,7 @@ function Navbar() {
         </Link>
 
         <div className="hidden md:flex space-x-6">
-          <Link to="/new-booking" className="hover:text-white">
+          <Link to="/create-booking" className="hover:text-white">
             New Booking
           </Link>
         </div>
@@ -29,7 +29,7 @@ function Navbar() {
 
       {isOpen && (
         <div className="md:hidden bg-blue-500 text-white shadow-md py-3">
-          <Link to="/about" className="block px-4 py-2 hover:bg-blue-400">
+          <Link to="/create-booking" className="block px-4 py-2 hover:bg-blue-400">
             New Booking
           </Link>
         </div>

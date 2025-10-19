@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
-import { getAllBookings } from "../services/booking.service"
+import { cancelBooking, getAllBookings, updateBooking } from "../services/booking.service"
 import type { BookingDTO } from "../types/BookingDTO";
+import EditBooking from "./EditBooking";
+import CancelBooking from "./CancelBooking";
 
 function Home() {
   const [bookings, setBookings] = useState<BookingDTO[]>([]);
@@ -30,9 +32,14 @@ function Home() {
     setIsEditDialogOpen(true);
   };
 
-  const handleOnClose = () => {
+  const handleOnCloseEditDialog = () => {
     setBookingToEdit(null);
     setIsEditDialogOpen(false);
+  };
+
+  const handleOnCloseCancelDialog = () => {
+    setBookingToCancel(null);
+    setIsCancelDialogOpen(false);
   };
 
   const handleUpdateBooking = (updatedBooking: BookingDTO) => {
@@ -40,7 +47,7 @@ function Home() {
       .then(response => {
         console.log("Update booking response = ", response);
         getBookings();
-        handleOnClose();
+        handleOnCloseEditDialog();
       })
       .catch(error => {
         console.log("Error updating booking : ", error);
@@ -57,7 +64,7 @@ function Home() {
       .then(response => {
         console.log("Cancel booking response = ", response);
         getBookings();
-        handleOnClose();
+        handleOnCloseCancelDialog();
       })
       .catch(error => {
         console.log("Error cancelling booking : ", error);
@@ -110,7 +117,7 @@ function Home() {
         <EditBooking
           booking={bookingToEdit}
           isOpen={isEditDialogOpen}
-          onClose={handleOnClose}
+          onClose={handleOnCloseEditDialog}
           onSubmit={handleUpdateBooking}
         />
       )}
@@ -119,7 +126,7 @@ function Home() {
         <CancelBooking 
           booking={bookingToCancel}
           isOpen={isCancelDialogOpen}
-          onClose={handleOnClose}
+          onClose={handleOnCloseCancelDialog}
           onSubmit={handleBookingCancelConfirmed}
         />
       )}

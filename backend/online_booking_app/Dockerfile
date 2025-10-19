@@ -7,7 +7,7 @@ ARG JAR_FILE=target/*.jar
 # Copy the jar file to the container
 COPY ${JAR_FILE} online_booking_app.jar
 
-COPY .env ./
+COPY docker.env ./.env
 
 # Run the application
-ENTRYPOINT ["java","-jar","/online_booking_app.jar"]
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar","/online_booking_app.jar"]

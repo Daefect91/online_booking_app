@@ -8,6 +8,18 @@ export const getAllBookings = async () => {
     return await axios.get(`${BASE_URL}${BOOKING_API}/all-bookings`);
 }
 
-export const createBooking = async (bookingDTO: BookingDTO) => {
+export const createBooking = async (bookingDTO: BookingDTO | null) => {
+    console.log("Booking data = ", JSON.stringify(bookingDTO));
     return await axios.post(`${BASE_URL}${BOOKING_API}/create`, bookingDTO);
 }
+
+export const updateBooking = async (bookingId: string | undefined, bookingDTO: BookingDTO | null) => {
+  return await axios.put(
+    `${BASE_URL}${BOOKING_API}/update/${bookingId}`,
+    bookingDTO
+  );
+};
+
+export const cancelBooking = async (bookingId: string | undefined) => {
+  return await axios.put(`${BASE_URL}${BOOKING_API}/cancel/${bookingId}`);
+};

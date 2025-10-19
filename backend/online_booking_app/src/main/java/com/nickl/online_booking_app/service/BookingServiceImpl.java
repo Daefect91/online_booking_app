@@ -86,6 +86,7 @@ public class BookingServiceImpl implements IBookingService {
     private BookingDTO convertToBookingDTO(Booking booking)
     {
         return BookingDTO.builder()
+            .bookingId(booking.getBookingId())
             .firstName(booking.getFirstName())
             .surname(booking.getSurname())
             .bookingStatus(EStatus.of(booking.getBookingStatus()).getStatusDescription())
