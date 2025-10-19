@@ -14,8 +14,8 @@ Steps to set up:
 
 6.) Navigate your terminal to the root folder(where compose.yaml) is located
 
-3.) Run "docker-compose build"
+7.) Run "docker-compose build"
 
-4.) Once all images have been built, run "docker-compose up"
+8.) Once all images have been built, run "docker-compose up"
 
-5.) Your workspace should be set up and the UI accessible at http://localhost:5173/
+9.) Your workspace should be set up and the UI accessible at http://localhost:5173/
