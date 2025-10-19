@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-OnlineBookingAppApplication<online_booking_app>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/backend/online_booking_app",
+            "mainClass": "com.nickl.online_booking_app.OnlineBookingAppApplication",
+            "projectName": "online_booking_app",
+            "args": "",
+            "envFile": "${workspaceFolder}/backend/online_booking_app/.env"
+        }
+    ]
+}
