@@ -1,0 +1,36 @@
+name: Online Booking Spring Boot Backend CI
+
+on:
+  push:
+    branches:
+      - main # or your main development branch
+    paths:
+      - 'backend/**' # Trigger only on changes in the backend directory
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25' # or your desired Java version
+          distribution: 'coretto' # or another distribution like 'adopt'
+
+      - name: Build with Maven
+        run: mvn clean install -DskipTests # Build the project, skip tests for faster build in CI
+
+      - name: Run Tests
+        run: mvn test # Run tests separately
+
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+
+      - name: Build docker image
+        run: docker-compose build backend
