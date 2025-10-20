@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '25' # or your desired Java version
-          distribution: 'coretto' # or another distribution like 'adopt'
+          distribution: 'zulu' # or another distribution like 'adopt'
 
       - name: Build with Maven
         run: mvn clean install -DskipTests # Build the project, skip tests for faster build in CI
