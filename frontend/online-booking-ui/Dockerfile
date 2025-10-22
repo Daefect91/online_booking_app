@@ -8,8 +8,8 @@ WORKDIR /app
 COPY package*.json ./
  
 # Clean up previous installations and reinstall
-RUN rm -rf node_modules package-lock.json && npm install
-#RUN npm install
+#RUN rm -rf node_modules package-lock.json && npm install
+RUN npm install
  
 # Copy the rest of your application files
 COPY . .
