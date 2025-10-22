@@ -5,7 +5,7 @@ on:
     branches:
       - main # or your main development branch
     paths:
-      - './backend/*' # Trigger only on changes in the backend directory
+      - 'backend/*' # Trigger only on changes in the backend directory
 
 jobs:
   build-and-test:
@@ -25,7 +25,6 @@ jobs:
         
       - name: Run Tests
         run: mvn test # Run tests separately
-        
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
