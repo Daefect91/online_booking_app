@@ -43,6 +43,20 @@ jobs:
     needs: configure-environment
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dotenv Action
+        uses: falti/dotenv-action@v1.1.4
+        with:
+          path: ./backend/online_booking_app/.env
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25' # or your desired Java version
+          distribution: 'zulu' # or another distribution like 'adopt'
+
       - name: Build with Maven
         run: mvn clean install -DskipTests # Build the project, skip tests for faster build in CI
         working-directory: ./backend/online_booking_app
