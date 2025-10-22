@@ -31,9 +31,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: ${{env.DB_NAME}}
-          POSTGRES_USER: ${{env.DB_USERNAME}}
-          POSTGRES_PASSWORD: ${{env.DB_PASSWORD}}
+          POSTGRES_DB: bookings_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postpass
         ports:
           - 5432:5432
         options: >-
