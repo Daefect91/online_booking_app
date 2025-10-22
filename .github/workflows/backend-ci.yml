@@ -25,7 +25,7 @@ jobs:
           java-version: '25' # or your desired Java version
           distribution: 'zulu' # or another distribution like 'adopt'
     
-  build-and-test:
+  start-postgres:
     needs: configure-environment
     runs-on: ubuntu-latest
     services:
@@ -42,20 +42,24 @@ jobs:
             --health-interval 10s
             --health-timeout 5s
             --health-retries 5
+
+  build-and-test:
+    needs: [configure-environment, start-postgres]
+    runs-on: ubuntu-latest
     steps:
       - name: Build with Maven
         run: mvn clean install -DskipTests # Build the project, skip tests for faster build in CI
-        working-directory: ./backend/online_booking_app
+        working-directory: backend/online_booking_app
 
       - name: Run Tests
         run: mvn test # Run tests separately
-        working-directory: ./backend/online_booking_app
+        working-directory: backend/online_booking_app
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend/online_booking_app
+          context: backend/online_booking_app
           push: false
     
