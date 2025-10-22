@@ -65,7 +65,6 @@ function Home() {
   const getBookings = () => {
     getAllBookings()
       .then((response) => {
-        console.log("resonse = ", response.data);
         setBookings(response.data);
       })
       .catch((error) => {
