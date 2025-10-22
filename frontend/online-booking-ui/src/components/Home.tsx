@@ -89,8 +89,7 @@ function Home() {
 
   const handleUpdateBooking = (updatedBooking: BookingDTO) => {
     updateBooking(updatedBooking.bookingId, updatedBooking)
-      .then((response) => {
-        console.log("Update booking response = ", response);
+      .then(() => {
         getBookings();
         handleOnCloseEditDialog();
       })
@@ -106,8 +105,7 @@ function Home() {
 
   const handleBookingCancelConfirmed = (cancelledBooking: BookingDTO) => {
     cancelBooking(cancelledBooking.bookingId)
-      .then((response) => {
-        console.log("Cancel booking response = ", response);
+      .then(() => {
         getBookings();
         handleOnCloseCancelDialog();
       })
