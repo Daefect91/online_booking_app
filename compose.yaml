@@ -28,9 +28,6 @@ services:
     build: ./frontend/online-booking-ui
     ports:
       - "5173:5173"
-    depends_on:
-      - backend
-      - postgres
     volumes:
      - ./frontend/online-booking-ui:/app
      - node_modules:/app/node_modules
