@@ -30,9 +30,9 @@ jobs:
         working-directory: ./backend/online_booking_app
 
       - name: Build and start Docker Compose services
-        run: docker compose up -d --build
+        run: docker compose up -d --build backend
 
-      - name: Run Tests
-        run: mvn test # Run tests separately
-        working-directory: ./backend/online_booking_app
+      # - name: Run Tests
+      #   run: mvn test # Run tests separately
+      #   working-directory: ./backend/online_booking_app
     

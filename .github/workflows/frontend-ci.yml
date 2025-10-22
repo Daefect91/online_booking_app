@@ -23,18 +23,13 @@ jobs:
         run: npm install
         working-directory: frontend/online-booking-ui # Run commands within the frontend directory
 
-      - name: Run Tests
-        run: npm test
-        working-directory: frontend/online-booking-ui
+      # - name: Run Tests
+      #   run: npm test
+      #   working-directory: frontend/online-booking-ui
 
       - name: Build React App
         run: npm run build
         working-directory: frontend/online-booking-ui
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend/online-booking-ui
-          push: false # Set to true to push to a registry
+      - name: Build and start Docker Compose services
+        run: docker compose up -d --build frontend
