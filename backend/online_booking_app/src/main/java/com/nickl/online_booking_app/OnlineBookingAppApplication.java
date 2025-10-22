@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OnlineBookingAppApplication {
 
 	public static void main(String[] args) {
+		System.out.println("hi!");
 		SpringApplication.run(OnlineBookingAppApplication.class, args);
 	}
 
