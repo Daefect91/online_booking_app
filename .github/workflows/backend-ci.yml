@@ -5,7 +5,7 @@ on:
     branches:
       - main # or your main development branch
     paths:
-      - './backend/online_booking_app' # Trigger only on changes in the backend directory
+      - 'backend/*' # Trigger only on changes in the backend directory
 
 jobs:
   build-and-test:
