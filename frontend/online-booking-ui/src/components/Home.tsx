@@ -1,29 +1,75 @@
-import { useEffect, useState } from "react"
-import { cancelBooking, getAllBookings, updateBooking } from "../services/booking.service"
+import { useEffect, useState } from "react";
+import {
+  cancelBooking,
+  getAllBookings,
+  updateBooking,
+} from "../services/booking.service";
 import type { BookingDTO } from "../types/BookingDTO";
 import EditBooking from "./EditBooking";
 import CancelBooking from "./CancelBooking";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TablePagination from "@mui/material/TablePagination";
+import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box';
 
 function Home() {
   const [bookings, setBookings] = useState<BookingDTO[]>([]);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [bookingToEdit, setBookingToEdit] = useState<BookingDTO | null>(null);
+  const [filterText, setFilterText] = useState("");
 
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const [bookingToCancel, setBookingToCancel] = useState<BookingDTO | null>(null);
+  const [bookingToCancel, setBookingToCancel] = useState<BookingDTO | null>(
+    null
+  );
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterText(event.target.value);
+    setPage(0);
+  };
+
+  const filteredBookings = bookings.filter(booking => 
+    booking.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
+    booking.surname.toLowerCase().includes(filterText.toLowerCase()) ||
+    booking.bookingStatus?.toLowerCase().includes(filterText.toLowerCase()) ||
+    booking.checkinDate.includes(filterText) || 
+    booking.checkoutDate.includes(filterText) || 
+    booking.roomNum.toString().includes(filterText)
+  );
+
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   useEffect(() => {
-      getBookings();
+    getBookings();
   }, []);
 
   const getBookings = () => {
     getAllBookings()
-      .then(response => {
+      .then((response) => {
         console.log("resonse = ", response.data);
         setBookings(response.data);
       })
-      .catch(error => {
-        console.log("error = ", error)
+      .catch((error) => {
+        console.log("error = ", error);
       });
   };
 
@@ -44,12 +90,12 @@ function Home() {
 
   const handleUpdateBooking = (updatedBooking: BookingDTO) => {
     updateBooking(updatedBooking.bookingId, updatedBooking)
-      .then(response => {
+      .then((response) => {
         console.log("Update booking response = ", response);
         getBookings();
         handleOnCloseEditDialog();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Error updating booking : ", error);
       });
   };
@@ -61,12 +107,12 @@ function Home() {
 
   const handleBookingCancelConfirmed = (cancelledBooking: BookingDTO) => {
     cancelBooking(cancelledBooking.bookingId)
-      .then(response => {
+      .then((response) => {
         console.log("Cancel booking response = ", response);
         getBookings();
         handleOnCloseCancelDialog();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Error cancelling booking : ", error);
       });
   };
@@ -74,44 +120,80 @@ function Home() {
   return (
     <>
       <h1 className="text-center mt-10 text-3xl font-bold">List of Bookings</h1>
-      <div className="container mt-10 space-y-4">
-        <div className="flex flex-row space-x-4 flex-wrap justify-center items-center gap-y-4">
-          {bookings.map((booking) => (
-            <div
-              key={booking.bookingId}
-              className="bg-gray-100 p-4 rounded-md flex flex-col justify-self-start"
-            >
-              <h2 className="text-lg font-bold">{booking.bookingId}</h2>
-              <p className="text-sm">
-                <strong>Guest</strong>: {booking.firstName} {booking.surname}
-              </p>
-              <p className="text-sm">
-                <strong>Dates</strong>: {booking.checkinDate} - {booking.checkoutDate}
-              </p>
-              <p className="text-sm">
-                <strong>Room Number</strong>: {booking.roomNum}
-              </p>
-              <p className="text-sm">
-                <strong>Status</strong>: {booking.bookingStatus}
-              </p>
-              <div className="flex my-2">
-                <button
-                  className="flex-1 bg-yellow-600 text-white py-1 px-1 mr-2 rounded-md"
-                  onClick={() => handleEditBooking(booking)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="flex-1 bg-red-600 text-white py-1 px-1 rounded-md"
-                  onClick={() => handleCancelBooking(booking)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <TableContainer component={Paper}>
+        <Box 
+            display="flex" 
+            justifyContent="flex-end" 
+            paddingRight="15px" 
+            paddingTop="15px"
+        >
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={filterText}
+            onChange={handleFilterChange}
+          >
+
+          </TextField>
+        </Box>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Guest Name</TableCell>
+              <TableCell>Room</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Check-in Date</TableCell>
+              <TableCell>Check-out Date</TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredBookings.map((booking) => (
+              <TableRow
+                key={booking.bookingId}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {booking.firstName} {booking.surname}
+                </TableCell>
+                <TableCell align="right">{booking.roomNum}</TableCell>
+                <TableCell>{booking.bookingStatus}</TableCell>
+                <TableCell>{booking.checkinDate}</TableCell>
+                <TableCell>{booking.checkoutDate}</TableCell>
+                <TableCell align="right">
+                  <Button 
+                    variant="contained" 
+                    size="small" 
+                    startIcon={<EditIcon/>}
+                    onClick={() => handleEditBooking(booking)}>
+                      Edit
+                  </Button>
+                </TableCell>
+                <TableCell align="right">
+                  <Button 
+                    variant="contained" 
+                    size="small"
+                    color="error"
+                    startIcon={<DeleteIcon/>}
+                    onClick={() => handleCancelBooking(booking)}>
+                      Cancel
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={bookings.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
 
       {bookingToEdit && (
         <EditBooking
@@ -123,7 +205,7 @@ function Home() {
       )}
 
       {bookingToCancel && (
-        <CancelBooking 
+        <CancelBooking
           booking={bookingToCancel}
           isOpen={isCancelDialogOpen}
           onClose={handleOnCloseCancelDialog}
@@ -134,4 +216,4 @@ function Home() {
   );
 }
 
-export default Home
+export default Home;
