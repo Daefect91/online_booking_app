@@ -10,6 +10,20 @@ on:
 jobs:
   configure-environment:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: bookings_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postpass
+        ports:
+          - 5432:5432
+        options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,34 +42,20 @@ jobs:
   build-and-test:
     needs: configure-environment
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: bookings_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postpass
-        ports:
-          - 5432:5432
-        options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
     steps:
       - name: Build with Maven
         run: mvn clean install -DskipTests # Build the project, skip tests for faster build in CI
-        working-directory: backend/online_booking_app
+        working-directory: ./backend/online_booking_app
 
       - name: Run Tests
         run: mvn test # Run tests separately
-        working-directory: backend/online_booking_app
+        working-directory: ./backend/online_booking_app
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: backend/online_booking_app
+          context: ./backend/online_booking_app
           push: false
     
