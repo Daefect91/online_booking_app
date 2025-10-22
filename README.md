@@ -1,4 +1,4 @@
-Spring Boot + React + TailwindCSS + Docker + Postgres Web App for managing online bookings.
+Spring Boot + React Vite + TailwindCSS + Docker + Postgres Web App for managing online bookings.
 
 Steps to set up:
 
