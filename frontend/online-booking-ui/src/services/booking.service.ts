@@ -9,7 +9,6 @@ export const getAllBookings = async () => {
 }
 
 export const createBooking = async (bookingDTO: BookingDTO | null) => {
-    console.log("Booking data = ", JSON.stringify(bookingDTO));
     return await axios.post(`${BASE_URL}${BOOKING_API}/create`, bookingDTO);
 }
 

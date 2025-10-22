@@ -30,7 +30,6 @@ function CreateBooking() {
     e.preventDefault();
 
     const submitData = new FormData(e.currentTarget);
-    console.log("Form Data = ", submitData);
     setBookingDTO({
       firstName: submitData.get("firstName") as string,
       surname: submitData.get("surname") as string,
@@ -40,8 +39,7 @@ function CreateBooking() {
     });
 
     createBooking(bookingDTO)
-      .then((response) => {
-        console.log("Create booking response = ", response);
+      .then(() => {
         handleReset();
         navigate("/");
       })
