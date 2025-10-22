@@ -26,6 +26,7 @@ jobs:
           distribution: 'zulu' # or another distribution like 'adopt'
     
   build-and-test:
+    needs: configure-environment
     runs-on: ubuntu-latest
     services:
       postgres:
